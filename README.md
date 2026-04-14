@@ -191,6 +191,7 @@ This project includes a convenient automation bash script `run.sh` that wraps al
 
 - **Launch Background Container**: `./run.sh docker`
 - **Run the Complete Audit Suite**: `./run.sh audit` *(Runs 5 alternating matches against all standard and bonus test bots in Docker)*
+  *(Note: If you have an Apple Silicon Mac, you can run `./run.sh audit m1` to bypass Docker and run the native `m1_game_engine` and `m1_robots` directly on your host system).*
 - **Run Unit Tests**: `./run.sh test`
 - **Compile the Custom Bot**: `./run.sh build`
 - **Open Interactive Shell**: `./run.sh shell`
@@ -251,7 +252,7 @@ To run a manual game match using the official engine natively inside the shell, 
 ## 📝 Notes
 
 - `Terminator` is a very strong robot.
-
+- For M1 Macs use `m1_robots` and `m1_game_engine`.
 
 ---
 ## 👥 Authors
