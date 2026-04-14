@@ -1,0 +1,9 @@
+services:
+  filler:
+    build: .
+    image: filler
+    volumes:
+      - ./solution:/filler/solution
+    container_name: filler-bot
+    stdin_open: true # Keeps the interactive session open (-i)
+    tty: true        # Allocates a pseudo-TTY (-t)
