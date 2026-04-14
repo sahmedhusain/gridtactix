@@ -1,5 +1,16 @@
 use crate::types::{Grid, Piece, Player, Position};
 
+pub fn find_opponent_center(grid: &Grid, player: &Player) -> (f64, f64) {
+    let cells = get_opponent_cells(grid, player);
+    if cells.is_empty() {
+        return (0.0, 0.0);
+    }
+    let sum_x: i32 = cells.iter().map(|&(x, _)| x).sum();
+    let sum_y: i32 = cells.iter().map(|&(_, y)| y).sum();
+    let n = cells.len() as f64;
+    (sum_x as f64 / n, sum_y as f64 / n)
+}
+
 pub fn get_opponent_cells(grid: &Grid, player: &Player) -> Vec<(i32, i32)> {
     let mut cells = Vec::new();
     for row in 0..grid.height {
