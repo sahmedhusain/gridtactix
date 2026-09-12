@@ -1,10 +1,10 @@
 services:
-  filler:
+  gridtactix:
     platform: linux/amd64
     build: .
-    image: filler
+    image: gridtactix
     volumes:
-      - ./solution:/filler/solution
-    container_name: filler-bot
+      - ./solution:/gridtactix/solution
+    container_name: gridtactix-bot
     stdin_open: true # interactive session open (-i)
     tty: true        # pseudo-TTY (-t)
