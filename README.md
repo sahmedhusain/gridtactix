@@ -62,24 +62,64 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     Start([Turn Start]) --> Parse[Parse STDIN Grid & Piece Payload]
-    Parse --> CandidateLoop[Iterate All Grid Offsets (-size to Board Dim)]
+    Parse --> CandidateLoop[Iterate All Grid Offsets]
     
     CandidateLoop --> Validate{Validate Overlap Rules}
     Validate -->|Rule 1: Exactly 1 Allied Overlap| Pass1[Valid Allied Touch]
     Validate -->|Rule 2: 0 Enemy Intersections| Pass2[No Hostile Collision]
     Validate -->|Rule 3: Fully In-Bounds| Pass3[Valid Grid Bounds]
     
-    Pass1 & Pass2 & Pass3 --> AddCandidates[Add to Placement Candidates]
+    Pass1 --> AddCandidates[Add to Placement Candidates]
+    Pass2 --> AddCandidates
+    Pass3 --> AddCandidates
     AddCandidates --> CandidateCheck{Any Valid Move?}
     
     CandidateCheck -- No --> OutputDefault[Output: 0 0 - Forfeit]
     CandidateCheck -- Yes --> CalcCoM[Calculate Opponent Center of Mass]
     
-    CalcCoM --> DistanceEval[Compute Min Euclidean Distance to CoM for Candidates]
+    CalcCoM --> DistanceEval[Compute Min Euclidean Distance to CoM]
     DistanceEval --> SelectBest[Select Coordinate with MIN Distance]
-    SelectBest --> OutputBest[Write "X Y\n" to STDOUT]
-    OutputDefault & OutputBest --> Wait([Wait Next Turn])
+    SelectBest --> OutputBest["Write 'X Y' to STDOUT"]
+    OutputDefault --> Wait([Wait Next Turn])
+    OutputBest --> Wait
 ```
+
+---
+
+## 🖥️ Live Terminal Simulation Preview
+
+Below is an illustration of GridTactix (`@` Player 1) executing a strategic maneuver against an opponent (`$`) on a 15x17 grid, aggressively blocking territorial expansion:
+
+```text
+====================================================================
+               GRIDTACTIX BATTLE ENGINE - TURN 042                  
+====================================================================
+
+      00000000001111111
+      01234567890123456
+ 000  . . . . . . . . . . . . . . . . .
+ 001  . . . . . . . . . . . . . . . . .
+ 002  . . . . @ @ @ . . . . . . . . . .
+ 003  . . . @ @ @ @ @ . . . . . . . . .
+ 004  . . . . @ @ @ @ @ . . . . . . . .
+ 005  . . . . . @ @ @ @ @ @ . . . . . .
+ 006  . . . . . . @ @ @ @ @ @ . . . . .
+ 007  . . . . . . . @ @ @ [@] $ $ $ . .   <-- Target CoM Choke Point
+ 008  . . . . . . . . . . $ $ $ $ $ . .
+ 009  . . . . . . . . . . $ $ $ $ $ . .
+ 010  . . . . . . . . . . . $ $ $ . . .
+ 011  . . . . . . . . . . . . $ . . . .
+
+Piece 3x2:
+* * .
+. * *
+
+[GridTactix Strategy Engine]
+ -> Opponent CoM: (8.42, 12.15)
+ -> Evaluating 24 candidate placements...
+ -> Optimal coordinate selected: (7, 10) [Euclidean Dist: 1.84]
+ => Output stream: 7 10
+
 
 ---
 
